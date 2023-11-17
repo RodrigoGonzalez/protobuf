@@ -443,21 +443,17 @@ class TextFormatTest(unittest.TestCase):
 
     SLASH = '\\'
     self.assertEqual('\x0fb', message.repeated_string[0])
-    self.assertEqual(SLASH + 'xf' + SLASH + 'x62', message.repeated_string[1])
+    self.assertEqual(f'{SLASH}xf{SLASH}x62', message.repeated_string[1])
     self.assertEqual(SLASH + '\x0f' + SLASH + 'b', message.repeated_string[2])
     self.assertEqual(SLASH + SLASH + 'xf' + SLASH + SLASH + 'x62',
                      message.repeated_string[3])
     self.assertEqual(SLASH + SLASH + '\x0f' + SLASH + SLASH + 'b',
                      message.repeated_string[4])
-    self.assertEqual(SLASH + 'x20', message.repeated_string[5])
+    self.assertEqual(f'{SLASH}x20', message.repeated_string[5])
 
   def assertRaisesWithMessage(self, e_class, e, func, *args, **kwargs):
     """Same as assertRaises, but also compares the exception message."""
-    if hasattr(e_class, '__name__'):
-      exc_name = e_class.__name__
-    else:
-      exc_name = str(e_class)
-
+    exc_name = e_class.__name__ if hasattr(e_class, '__name__') else str(e_class)
     try:
       func(*args, **kwargs)
     except e_class as expr:
@@ -468,7 +464,7 @@ class TextFormatTest(unittest.TestCase):
                                            e.encode('string_escape')))
       return
     else:
-      raise self.failureException('%s not raised' % exc_name)
+      raise self.failureException(f'{exc_name} not raised')
 
 
 class TokenizerTest(unittest.TestCase):
